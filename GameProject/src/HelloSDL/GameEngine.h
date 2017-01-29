@@ -37,6 +37,7 @@ namespace GameEngine {
 		R.LoadTexture<ObjectID::WALL>("wall_rock.jpg");
 		R.LoadTexture<ObjectID::GO>("Game_Over.jpg");
 		R.LoadTexture<ObjectID::SCORE>("bg_score.jpg");
+		R.LoadTexture<ObjectID::TIMER>("timer.jpg");
 	}
 	//! Adds the game scenes into the Scene Manager and decides which is the first screen
 	void AddScenes(void) {

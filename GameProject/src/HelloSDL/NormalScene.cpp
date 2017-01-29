@@ -32,7 +32,7 @@ NormalScene::NormalScene(void) {
 	Wall2 = { { 20,50,950,50 },ObjectID::WALL };//arriba inclinado
 	Wall3 = { { 950,50,50,650 },ObjectID::WALL };//derecha recto
 	Wall4 = { { 20,50,50,600 },ObjectID::WALL };//izquierda recto
-
+	timer = { { 20,700,tiempo,20 },ObjectID::TIMER };//barra de tiempo
 	nivel = 1;
 	alimentosPorObt = 5 + 1 * nivel;
 }
@@ -145,14 +145,17 @@ void NormalScene::Update(void) {
 		snaki.alimentosObt = 0;//restaura el valor para el nuevo nivel
 		alimentosPorObt = 3 + 2 * nivel;//aumenta la lista de alimentos por obtener
 		printf("Nivel %d\n", nivel);
+		tiempo += 150;
 	}
 
-	if (tiempo <= 0) {
+	if (tiempo <= 20) {
 		snaki.lifes = 0;
 	}
 	tiempo--;//pasas el tiempo
 	score = playerd.score;//le pasas el score al static score de las escenas de ranking
 
+
+	timer = { { 20,700,tiempo/2,20 },ObjectID::TIMER };//barra de tiempo
 }
 
 
@@ -242,5 +245,5 @@ void NormalScene::Draw(void) {
 	Wall2.Draw();
 	Wall3.Draw();
 	Wall4.Draw();
-
+	timer.Draw();
 }

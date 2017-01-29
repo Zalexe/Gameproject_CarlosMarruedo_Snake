@@ -15,7 +15,8 @@ enum class ObjectID : int {
 	SCORE, //Score scene background
 	EasyLvl,
 	NormalLvl,
-	HardLvl
+	HardLvl,
+	TIMER
 };
 inline std::ostream &operator<<(std::ostream &os, const ObjectID &id) { return os << int(id); };
 inline std::istream &operator>>(std::istream &is, ObjectID &id) { return is >> reinterpret_cast<int&>(id); };

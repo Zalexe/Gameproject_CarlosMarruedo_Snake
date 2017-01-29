@@ -108,16 +108,19 @@ bool snake::Collision(snake::COORD headNow) {
 
 	headNow = *pos;
 	
-	while (pos != --segments.end()) {
-		if ((headNow.x == head.x || (headNow.x < head.x + 5 && headNow.x > head.x - 5))
-			&& (headNow.y == head.y || (headNow.y < head.y +5 && headNow.y > head.y -5))) {
-			pos++;
-			return true;
+	while (pos != segments.end()) {
+		headNow = *pos;
+		
+		if ((headNow.x == head.x || (headNow.x < head.x + 15 && headNow.x > head.x - 15))
+			&& (headNow.y == head.y || (headNow.y < head.y + 15 && headNow.y > head.y - 15))) {
 			
-		}
+			
+			return true;
 
+		}
 		pos++;
-		return false;
+		
 		
 	}
+	return false;
 }

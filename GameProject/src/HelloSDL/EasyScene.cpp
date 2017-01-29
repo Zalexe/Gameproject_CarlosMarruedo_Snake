@@ -1,4 +1,8 @@
 
+
+#include <stdlib.h> 
+#include <math.h>
+#include <stdio.h> 
 #include "GUI.h"
 #include "Player.h"
 #include "System.h"
@@ -10,6 +14,8 @@
 #include "GameOverScene.h"
 #include <vector>
 #include <XML/rapidxml_utils.hpp>
+
+
 
 using namespace Logger;
 
@@ -33,7 +39,7 @@ EasyScene::EasyScene(void) {
 	Wall2 = { { 20,50,950,50 },ObjectID::WALL };//arriba inclinado
 	Wall3 = { { 950,50,50,650 },ObjectID::WALL };//derecha recto
 	Wall4 = { { 20,50,50,600 },ObjectID::WALL };//izquierda recto
-	
+	timer = { { 20,700,tiempo,20 },ObjectID::TIMER };//barra de tiempo
 	nivel = 1;
 	alimentosPorObt = 3 + 1 * nivel;
 }
@@ -130,6 +136,7 @@ void EasyScene::Update(void) {
 				&& (apple.position_y == snak.head.y || (apple.position_y < snak.head.y + 5 && apple.position_y > snak.head.y - 5))) {
 				apple.FoodSpawn();
 			}
+
 		}
 		if (snak.alimentosObt == alimentosPorObt) {
 			GUI::DrawTextShaded<FontID::ARIAL>("Has completado el nivel!",
@@ -145,14 +152,18 @@ void EasyScene::Update(void) {
 			snak.alimentosObt=0;//restaura el valor para el nuevo nivel
 			alimentosPorObt = 3 + 1 * nivel;//aumenta la lista de alimentos por obtener
 			printf("Nivel %d\n", nivel);
+			tiempo = tiempomax;
 		}
 
-		if (tiempo <= 0) {//comprobacion del tiempo
+		if (tiempo <= 20) {//comprobacion del tiempo
 			snak.lifes = 0;
 		}
 		tiempo--;//pasas el tiempo
 		score = player.score; //le pasas el score al static score de las escenas de ranking
-	
+		
+
+
+		timer = { { 20,700,tiempo,20 },ObjectID::TIMER };//barra de tiempo
 }
 
 
@@ -160,7 +171,7 @@ void EasyScene::Draw(void) {
 	m_background.Draw(); // Render background
 	snake::COORD pos; //inicializa cordenadas 
 	pos = snak.segments.front(); //se guarda la primera posicion de la lista
-	
+
 
 	if (snak.dir == 1) { //comprueba la direccion
 		s_head = { { snak.getint(pos.x),snak.getint(pos.y),30,30 },ObjectID::SNAKE_HEAD_DOWN }; //pinta en la posicion del primer elemento de la lista y cambia el sprite dependiendo de su direccion
@@ -215,32 +226,35 @@ void EasyScene::Draw(void) {
 	snak.aux2 = snak.segments.back(); //al acabar de recorrrer el cuerpo recogemos la ultima posicion de la lista
 
 
-	
-		if (snak.dir == 1) { //pintamos la cola dependiendo de su direccion en la coordenada final de la lista
-			s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y),30,30 },ObjectID::SNAKE_TAIL_DOWN };
 
-		}
-		else if (snak.dir == 0) {
-			s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y), 30, 30 },ObjectID::SNAKE_TAIL_RIGHT };
+	if (snak.dir == 1) { //pintamos la cola dependiendo de su direccion en la coordenada final de la lista
+		s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y),30,30 },ObjectID::SNAKE_TAIL_DOWN };
 
-		}
-		else if (snak.dir == 2) {
-			s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y),30,30 },ObjectID::SNAKE_TAIL_LEFT };
+	}
+	else if (snak.dir == 0) {
+		s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y), 30, 30 },ObjectID::SNAKE_TAIL_RIGHT };
 
-		}
-		else if (snak.dir == 3) {
-			s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y),30,30 },ObjectID::SNAKE_TAIL };
-		}
-		s_food = { { apple.position_x,apple.position_y,30,30 },ObjectID::FOOD };
+	}
+	else if (snak.dir == 2) {
+		s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y),30,30 },ObjectID::SNAKE_TAIL_LEFT };
+
+	}
+	else if (snak.dir == 3) {
+		s_tail = { { snak.getint(snak.aux2.x),snak.getint(snak.aux2.y),30,30 },ObjectID::SNAKE_TAIL };
+	}
+	s_food = { { apple.position_x,apple.position_y,30,30 },ObjectID::FOOD };
 
 
-		
-		
-		s_tail.Draw(); //pintamos la cola
-		s_food.Draw(); //pintamos la comida
-		Wall1.Draw(); //pintamos las paredes
-		Wall2.Draw(); 
-		Wall3.Draw();
-		Wall4.Draw();
+
+
+	s_tail.Draw(); //pintamos la cola
+	s_food.Draw(); //pintamos la comida
+	Wall1.Draw(); //pintamos las paredes
+	Wall2.Draw();
+	Wall3.Draw();
+	Wall4.Draw();
+	timer.Draw();
+
+
 
 }

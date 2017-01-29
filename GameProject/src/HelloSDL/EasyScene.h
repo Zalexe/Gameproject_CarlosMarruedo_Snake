@@ -23,6 +23,7 @@ private:
 	Sprite Wall2;
 	Sprite Wall3;
 	Sprite Wall4;
+	Sprite timer;
 	//tiempo limite
 	int tiempo;
 	int tiempomax;
